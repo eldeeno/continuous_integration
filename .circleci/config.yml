@@ -42,7 +42,7 @@ jobs:
       - run:
           name: "Read from File"
           command: |
-            echo cat /tmp/workspace/output.txt
+            cat /tmp/workspace/output.txt
   print-env:
     docker:
       - image: cimg/base:stable
