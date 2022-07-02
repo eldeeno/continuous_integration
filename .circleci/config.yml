@@ -20,38 +20,33 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
-      - run: mkdir -p workspace
       - run:
           name: "Save to file"
           command: |
-            echo "This is  the output text" > workspace/output.txt
+            echo "This is  the output text" > ~/output.txt
           # save the files your deploy step needs
       - persist_to_workspace:
-          root: workspace
+          root: ~/
           paths:
             - output.txt
   print_output_file:
     docker:
       - image: cimg/base:stable
     steps:
-      - checkout
       - attach_workspace:
-            # Must be absolute path or relative path from working_directory
-            at: /tmp/workspace
+            at: ~/
       - run:
           name: "Read from File"
           command: |
-            cat /workspace/output.txt
-  print-env:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - run:
-          name: "Env Test"
-          command: |
-            echo $TEST_ENV
+            cat ~/output.txt
+  # print-env:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - run:
+  #         name: "Env Test"
+  #         command: |
+  #           echo $TEST_ENV
 workflows:
   welcome:
     jobs:
@@ -59,4 +54,4 @@ workflows:
       # - say-world
       - save_hello_world_output
       - print_output_file
-      - print-env
+      # - print-env
