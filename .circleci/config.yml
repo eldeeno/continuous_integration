@@ -17,7 +17,7 @@ jobs:
           name: "Say World"
           command: "echo World!"
 workflows:
-  say-hello-workflow:
+  welcome:
     jobs:
       - say-hello
       - say-world:
