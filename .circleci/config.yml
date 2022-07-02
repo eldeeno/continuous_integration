@@ -20,10 +20,7 @@ jobs:
     docker:
       - image: cimg/base:stable
     steps:
-      - run:
-          name: "Save to file"
-          command: |
-            echo "This is  the output text" > ~/output.txt
+      - run: echo "This is  the output text" > ~/output.txt
           # save the files your deploy step needs
       - persist_to_workspace:
           root: ~/
@@ -35,10 +32,7 @@ jobs:
     steps:
       - attach_workspace:
             at: ~/
-      - run:
-          name: "Read from File"
-          command: |
-            cat ~/output.txt
+      - run: cat ~/output.txt
   # print-env:
   #   docker:
   #     - image: cimg/base:stable
