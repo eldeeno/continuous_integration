@@ -16,8 +16,17 @@ jobs:
       - run:
           name: "Say World"
           command: "echo World!"
+  print-env:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - checkout
+      - run:
+          name: "Env Test"
+          command: echo $TEST_ENV
 workflows:
   welcome:
     jobs:
       - say-hello
       - say-world
+      - print-env
