@@ -1,53 +1,11 @@
 version: 2.1
 jobs:
-  # say-hello:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Say hello"
-  #         command: "echo Hello,"
-  # say-world:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - checkout
-  #     - run:
-  #         name: "Say World"
-  #         command: "echo World!"
-  save_hello_world_output:
+  my_job:
     docker:
-      - image: cimg/base:stable
+      - image: circleci/node:13.8.0
     steps:
-      - run: echo "This is  the output text" > ~/output.txt
-          # save the files your deploy step needs
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - output.txt
-  print_output_file:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - attach_workspace:
-            at: ~/
-      - run: cat ~/output.txt
-  # print-env:
-  #   docker:
-  #     - image: cimg/base:stable
-  #   steps:
-  #     - run:
-  #         name: "Env Test"
-  #         command: |
-  #           echo $TEST_ENV
-workflows:
-  welcome:
-    jobs:
-      # - say-hello
-      # - say-world
-      - save_hello_world_output
-      - print_output_file:
-          requires:
-            - save_hello_world_output
-      # - print-env
+      - run: exit 1
+      - run:
+          name: on error
+          command: echo "Hello Error!"
+          when: on_fail
