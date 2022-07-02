@@ -1,21 +1,47 @@
 version: 2.1
 jobs:
-  say-hello:
+  # say-hello:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Say hello"
+  #         command: "echo Hello,"
+  # say-world:
+  #   docker:
+  #     - image: cimg/base:stable
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: "Say World"
+  #         command: "echo World!"
+  save_hello_world_output:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - run:
-          name: "Say hello"
-          command: "echo Hello,"
-  say-world:
+          name: "Save to file"
+          command: |
+            echo "This is  the output text" > output.txt
+          # save the files your deploy step needs
+      - persist_to_workspace:
+          root: /tmp/dir     # relative path to our working directory
+          paths: 
+            - foo/bar     # file globs which will be persisted to
+  print_output_file:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
+      - attach_workspace:
+          # Must be absolute path or relative path from working_directory
+          at: /tmp/workspace
       - run:
-          name: "Say World"
-          command: "echo World!"
+          name: "Read from File"
+          command: |
+            echo cat /tmp/workspace/output.txt
   print-env:
     docker:
       - image: cimg/base:stable
@@ -28,6 +54,8 @@ jobs:
 workflows:
   welcome:
     jobs:
-      - say-hello
-      - say-world
+      # - say-hello
+      # - say-world
+      - save_hello_world_output
+      - print_output_file
       - print-env
