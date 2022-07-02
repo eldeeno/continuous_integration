@@ -21,23 +21,24 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
+      - run: mkdir -p workspace
       - run:
           name: "Save to file"
           command: |
-            echo "This is  the output text" > output.txt
+            echo "This is  the output text" > workspace/output.txt
           # save the files your deploy step needs
       - persist_to_workspace:
-          root: /tmp/dir     # relative path to our working directory
-          paths: 
-            - foo/bar     # file globs which will be persisted to
+          root: workspace
+          paths:
+            - output.txt
   print_output_file:
     docker:
       - image: cimg/base:stable
     steps:
       - checkout
       - attach_workspace:
-          # Must be absolute path or relative path from working_directory
-          at: /tmp/workspace
+            # Must be absolute path or relative path from working_directory
+            at: /tmp/workspace
       - run:
           name: "Read from File"
           command: |
