@@ -23,7 +23,8 @@ jobs:
       - checkout
       - run:
           name: "Env Test"
-          command: echo $TEST_ENV
+          command: |
+            echo $TEST_ENV
 workflows:
   welcome:
     jobs:
